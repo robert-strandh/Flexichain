@@ -18,10 +18,12 @@
 ;;; License along with this library; if not, write to the Free Software
 ;;; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-;; The tester is not included, for it depends on clim.  The stupid
-;; implementation has also been left out, since it seems mostly useful
-;; for testing.
-(asdf:defsystem :flexichain
+;;; The tester is not included, for it depends on clim.  The stupid
+;;; implementation has also been left out, since it seems mostly useful
+;;; for testing.
+(cl:in-package #:asdf-user)
+
+(defsystem :flexichain
   :name "flexichain"
   :version #.(with-open-file
                  (vers (merge-pathnames "version.lisp-expr" *load-truename*))
@@ -32,4 +34,3 @@
                (:file "flexichain" :depends-on ("utilities" "flexichain-package"))
                (:file "flexicursor" :depends-on ("flexichain"))
                (:file "flexirank" :depends-on ("flexichain"))))
-
