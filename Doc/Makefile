@@ -1,36 +1,32 @@
 NAME=flexichain
 
 TEXFILES=$(NAME).tex $(shell ./tex-dependencies $(NAME).tex)
-PSTEX_T=$(shell ./strip-dependence inputfig $(TEXFILES))
+BIBFILES=$(NAME).bib
+PDF_T=$(shell ./strip-dependence inputfig $(TEXFILES))
 VERBATIM=$(shell ./strip-dependence verbatimtabinput $(TEXFILES))
-PSTEX=$(subst .pstex_t,.pstex,$(PSTEX_T))
+PDF=$(subst .pdf_t,.pdf,$(PDF_T))
 
-all : $(NAME).ps $(NAME).pdf
+all : $(NAME).pdf
 
-%.pstex: %.fig
-	fig2dev -Lpstex -m 0.75  $< $@
+%.pdf: %.fig
+	fig2dev -Lpdftex -m 0.75  $< $@
 
-%.pstex_t: %.fig %.pstex
-	fig2dev -Lpstex_t -m 0.75 -p $(basename $<).pstex $< $@
+%.pdf_t: %.fig %.pdf
+	fig2dev -Lpdftex_t -m 0.75 -p $(basename $<).pdf $< $@
 
-$(NAME).dvi: $(TEXFILES) $(PSTEX_T) $(VERBATIM)
-	latex $<
+$(NAME).pdf: $(TEXFILES) $(PDF) $(PDF_T) $(VERBATIM) $(CODEFILES) $(BIBFILES)
+	pdflatex $<
 	makeindex $(NAME)
-	latex $<
+	bibtex $(NAME)
+	pdflatex $<
+	pdflatex $<
 
-$(NAME).ps: $(NAME).dvi $(PSTEX)
-	dvips $< -o
-
-$(NAME).pdf: $(NAME).dvi $(PSTEX)
-	dvipdf $< $(NAME).pdf
-
-view: $(NAME).ps
-	gv -antialias -scale 1 $<
+view: $(NAME).pdf
+	xpdf $<
 
 clean:
 	rm -f *.aux *.log *~
 
-spotless:
-	make clean
-	rm -f *.ps *.dvi *.pstex *.pstex_t *.toc *.idx *.ilg *.ind *.fig.bak
-	rm -f *.cb
+spotless: clean
+	rm -f *.ps *.dvi *.pdf *.pdf_t *.toc *.idx *.ilg *.ind *.fig.bak
+	rm -f *.out *.cb *.cb2 *.bbl *.blg
