@@ -33,4 +33,4 @@ clean:
 spotless:
 	make clean
 	rm -f *.ps *.dvi *.pstex *.pstex_t *.toc *.idx *.ilg *.ind *.fig.bak
-
+	rm -f *.cb
