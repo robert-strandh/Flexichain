@@ -272,7 +272,9 @@ element of the CHAIN."
   (with-slots (element-type buffer gap-start) chain
      (assert (<= 0 position (nb-elements chain)) ()
              'flexi-position-error :chain chain :position position)
-     (assert (subtypep (array-element-type vector) element-type) ()
+     (assert (subtypep (array-element-type vector)
+                       (upgraded-array-element-type element-type))
+             ()
              'flexi-incompatible-type-error :element vector :chain chain)
      (ensure-gap-position chain position)
      (ensure-room chain (+ (nb-elements chain) (length vector)))
