@@ -562,4 +562,3 @@ HOP-ELEMENTS-RIGHT ---abcdefghijklm--- 2  =>  -----cdefghijklmab-"
           ((and (zerop gap-end) (> gap-start 0)) :gap-right)
           ((> gap-end gap-start) :gap-middle)
           (t :gap-non-contiguous))))
-
