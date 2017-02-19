@@ -1,4 +1,4 @@
-{;;; Flexichain
+;;; Flexichain
 ;;; Flexichain data structure definition
 ;;;
 ;;; Copyright (C) 2003-2004  Robert Strandh (strandh@labri.fr)
@@ -19,7 +19,7 @@
 ;;; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 
-(in-package :flexichain)
+(cl:in-package :flexichain)
 
 (defclass flexichain ()
   ((element-type :initarg :element-type :initform t)

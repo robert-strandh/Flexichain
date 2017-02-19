@@ -16,7 +16,7 @@
 ;;; License along with this library; if not, write to the Free Software
 ;;; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-(in-package :flexichain)
+(cl:in-package :flexichain)
 
 ;;; A ranked flexichain is a flexichain (or a cursorchain) in which
 ;;; the elements know their position.  To make that work, client code
