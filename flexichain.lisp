@@ -1,4 +1,4 @@
-;;; Flexichain
+{;;; Flexichain
 ;;; Flexichain data structure definition
 ;;;
 ;;; Copyright (C) 2003-2004  Robert Strandh (strandh@labri.fr)
@@ -267,7 +267,7 @@ element of the CHAIN."
      (incf gap-start)
      (when (= gap-start (length buffer))
        (setf gap-start 0))))
-  
+
 (defmethod insert-vector* ((chain standard-flexichain) position vector)
   (with-slots (element-type buffer gap-start) chain
      (assert (<= 0 position (nb-elements chain)) ()
@@ -283,7 +283,7 @@ element of the CHAIN."
           (incf gap-start)
           (when (= gap-start (length buffer))
             (setf gap-start 0)))))
-  
+
 (defmethod delete* ((chain standard-flexichain) position)
   (with-slots (buffer expand-factor min-size fill-element gap-end) chain
     (assert (< -1 position (nb-elements chain)) ()
@@ -392,7 +392,7 @@ on the left of the buffer."
              (hop-elements-left chain (- gap-end gap-start))
              (push-elements-right chain (- gap-start hot-spot)))))))
 
-(defun move-right-gap (chain hot-spot)    
+(defun move-right-gap (chain hot-spot)
   "Moves the gap. Handles the case where the gap is
 on the right of the buffer."
   (with-slots (buffer gap-start gap-end) chain
@@ -456,7 +456,7 @@ on both ends of the buffer."
 
 (defmethod fill-gap ((fc standard-flexichain) start end)
   (with-slots (buffer fill-element) fc
-     (fill buffer fill-element :start start :end end)))  
+     (fill buffer fill-element :start start :end end)))
 
 (defun push-elements-left (chain count)
   "Pushes the COUNT elements of CHAIN at the right of the gap,
