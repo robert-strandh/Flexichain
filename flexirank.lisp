@@ -57,7 +57,8 @@
 ;;; this class must be mixed into a flexichain that contains ranked elements
 (defclass flexirank-mixin () ())
 
-(defmethod move-elements :before ((chain flexirank-mixin) to from start1 start2 end2)
+(defmethod move-elements :before
+    ((chain flexirank-mixin) to from start1 start2 end2)
   (declare (ignore to))
   (loop for old from start2 below end2
         for new from start1
@@ -65,11 +66,13 @@
              (when (typep element 'element-rank-mixin)
                (setf (index element) new)))))
 
-(defmethod insert* :after ((chain flexirank-mixin) position (object element-rank-mixin))
+(defmethod insert* :after
+    ((chain flexirank-mixin) position (object element-rank-mixin))
   (setf (index object) (position-index chain position)
         (chain object) chain))
 
-(defmethod (setf element*) :after ((object element-rank-mixin) (chain flexirank-mixin) position)
+(defmethod (setf element*) :after
+    ((object element-rank-mixin) (chain flexirank-mixin) position)
   (setf (index object) (position-index chain position)
         (chain object) chain))
 
