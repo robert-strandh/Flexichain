@@ -35,7 +35,7 @@
 
 (defclass element-rank-mixin ()
   ((index :accessor index)
-   (chain :accessor chain)))  
+   (chain :accessor chain)))
 
 (defmethod rank ((element element-rank-mixin))
   (index-position (chain element) (index element)))
