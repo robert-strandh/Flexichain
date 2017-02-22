@@ -54,7 +54,8 @@
   (assert (not (flexi-first-p element)))
   (element* (chain element) (1- (rank element))))
 
-;;; this class must be mixed into a flexichain that contains ranked elements
+;;; This class must be mixed into a flexichain that contains ranked
+;;; elements.
 (defclass flexirank-mixin () ())
 
 (defmethod move-elements :before
