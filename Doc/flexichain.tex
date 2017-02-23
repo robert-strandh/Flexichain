@@ -21,7 +21,7 @@
 
 In this section, we describe the \texttt{flexichain} protocol,
 allowing client code to dynamically add elements to, and delete
-elements from a sequence (or chain) of such elements. 
+elements from a sequence (or chain) of such elements.
 
 \subsection{The concept of a position}
 
@@ -45,7 +45,7 @@ is to be inserted.
 
 \subsection{Performance}
 
-Accessing and replacing an element are constant-time operations. 
+Accessing and replacing an element are constant-time operations.
 
 We guarantee linear average complexity of a sequence of insert and
 delete operations provided that the position of two successive
@@ -67,13 +67,13 @@ length of the chain and $k$ is a \textit{constant factor}.  We
 multiply rather than add, because we want to guarantee the linear
 average complexity of a sequence of insert and delete
 operations. Typically, $k$ is somewhere between $1.5$ and $2$.  The
-default value is $k=1.5$.  
+default value is $k=1.5$.
 
 We shrink the space whenever the length of the chain (the number of
 elements) is significantly smaller than the available space.  By
 default, the definition of ``significantly'' is that the ratio of
 length to size must be less than $1/k^2$ in order for the space to be
-shrunk.  Again, the new chunk size will be $lk$. 
+shrunk.  Again, the new chunk size will be $lk$.
 
 Using the default value of $k$, this means that the amount of wasted
 space can be as large as the length of the chain in the worst case,
@@ -83,7 +83,7 @@ only 25\%.
 Applications that store a number of elements that does not vary much,
 can choose a small value for the $k$ to waste less space.  Such
 applications will have to resize the space relatively rarely so
-performance will not be affected by small values of $k$. 
+performance will not be affected by small values of $k$.
 
 The space will not shrink below a minimum size (default $5$
 elements).  The reason for this is to avoid to many resize operations
@@ -93,7 +93,7 @@ much space.  This value is also used for the initial size of the
 chain.  Applications that will typically store a large number of
 elements can choose a greater value for the minimum size.  Doing so
 also improves performance since fewer resize operations will have to
-be executed. 
+be executed.
 
 \subsection{Protocol classes and functions}
 
@@ -105,7 +105,7 @@ the operation.  Later (in the \texttt{flexicursor} section) we give
 
 \Defprotoclass {flexichain}
 
-The protocol class for flexichains. 
+The protocol class for flexichains.
 
 \definitarg {:initial-contents}
 \definitarg {:element-type}
@@ -114,13 +114,13 @@ The protocol class for flexichains.
 \Definitarg {:min-size}
 
 All instantiable subclasses of \cl{flexichain} accept these
-initargs. 
+initargs.
 
 The \cl{:initial-contents} initarg is a sequence (list, vector,
 string) of objects to be stored in the \cl{flexichain} from the start.
 
 The \cl{:element-type} initarg determines the type of the elements of
-the \cl{flexichain} (default is \cl{t}). 
+the \cl{flexichain} (default is \cl{t}).
 
 The \cl{:fill-element} initarg should be an object that is compatible
 with the \cl{:element-type} initarg and will be used to fill
@@ -137,7 +137,7 @@ the chain is full.  Default value is $1.5$.
 
 The \cl{:min-size} initarg determines the smallest space allocated to
 hold elements of the chain.  Default value is $5$.  It is not
-reasonable to supply values smaller than $5$. 
+reasonable to supply values smaller than $5$.
 
 The instance created by make-instance will have a length which is that
 of the sequence given by \cl{:initial-contents} or $0$ if no
@@ -149,7 +149,7 @@ The standard instantiable subclass of \cl{flexichain}.
 
 \Defgeneric {nb-elements} {chain}
 
-Return the number of elements in the flexichain \arg{chain}. 
+Return the number of elements in the flexichain \arg{chain}.
 
 \Deferror {flexi-error}
 
@@ -159,7 +159,7 @@ operations on flexichains.
 \Deferror {flexi-position}
 
 This condition will be signaled by operations that require a position
-argument whenever that argument is out of range. 
+argument whenever that argument is out of range.
 
 \defgeneric {insert*} {chain position object}
 
@@ -202,7 +202,7 @@ will be signaled.
 
 A \texttt{flexichain} can be used as a stack or as a queue with very good
 performance.  In this section, we suggest a set of operations to
-facilitate such use. 
+facilitate such use.
 
 \Defgeneric {push-start} {chain object}
 
@@ -229,7 +229,7 @@ position $0$ now is at position $n$.  When the magnitude of $n$ is
 greater than the length of the \texttt{chain}, the operation wraps
 around so that it becomes equivalent to the same operation with a
 value of $n$ modulo the length.  When the length of the \texttt{chain}
-is less than $2$, this function does nothing. 
+is less than $2$, this function does nothing.
 
 \section{Implementation of the \texttt{flexichain} protocol}
 
@@ -247,7 +247,7 @@ is \emph{valid} if $0 \le i < l$ where $l$ is the size of the vector
 0$).
 
 We use the term \emph{extended element} to mean a user element or a
-sentinel. 
+sentinel.
 
 We say that the vector is \textit{full} when it contains as many
 extended elements as its length (i.e., the gap has a size of $0$), and
@@ -260,7 +260,7 @@ respect to the data.  Figure \ref{fig-both-contiguous} shows the case
 where both the gap and the data are contiguous.  Figure
 \ref{fig-data-not-contiguous} shows the case where the data is not
 contiguous.  Finally, figure \ref{fig-gap-not-contiguous} shows the
-case where the gap is not contiguous. 
+case where the gap is not contiguous.
 
 \begin{figure}
 \begin{center}
@@ -291,7 +291,7 @@ sentinel i.e.. \texttt{data-start} is always a valid index
 
 A \textit{positional index} is an index in the vector that corresponds
 to a position in the flexichain, and so is an index either of a user
-object or the index of the last sentinel. 
+object or the index of the last sentinel.
 
 We introduce two different indexes (always valid as well),
 \texttt{gap-start} and \texttt{gap-end}.  The \texttt{gap-start} index
@@ -331,27 +331,27 @@ case, we need to move the gap.
 
 There is a case when it is particularly simple to move the gap, namely
 when the vector is full.  In that case, we can just assign both
-\texttt{gap-start} and \texttt{gap-end} to the value of the hot spot. 
+\texttt{gap-start} and \texttt{gap-end} to the value of the hot spot.
 
 There are two ways of getting \texttt{gap-end} to be equal to the hot
 spot either move everything to the left of the hot spot even further
 left, or everything to the right of the hot spot (including the hot
 spot itself) even further right. We always do the one that requires
 the fewest elements to be moved.  One solution will require fewer than
-half the elements to be moved and the other one at least half.  
+half the elements to be moved and the other one at least half.
 
 Moving to the right will require that a number of elements equal to
 the difference between \texttt{gap-start} and the hot spot to be
 moved, provided that \texttt{gap-start} is greater than the hot spot.
 If \texttt{gap-start} is smaller than the hot spot, it is that
 difference plus the size of the vector. We check whether that value is
-smaller than half of \texttt{nb-elements}. 
+smaller than half of \texttt{nb-elements}.
 
 Moving the elements requires one, two, or three calls to \cl{replace}.
 
 \subsubsection{Moving elements to the left}
 
-Let us first consider the case of moving elements to the left. 
+Let us first consider the case of moving elements to the left.
 
 Case 1: If the entire contiguous gap is to the left of the hot spot
 (as in the upper half of figure \ref{fig-both-contiguous} or as in
@@ -371,7 +371,7 @@ moved is greater than the part of the gap that is flush right in the
 vector.  The first call will fill the part of the gap that is flush
 right in the vector, giving the situation of the upper half of figure
 \ref{fig-both-contiguous}.  The second call will be as in case 1
-above. 
+above.
 
 Case 4: Two calls are also needed if the data is not contiguous (as in
 figure \ref{fig-data-not-contiguous}) and the entire contiguous gap is
@@ -380,7 +380,7 @@ of the hot spot (i.e., the index of the hot spot before the move) is
 no greater than the size of the gap.  The first call will move
 everything to the right of the gap so that the gap will be flush right
 as in case 2 above.  The second call will move the remaining
-elements.  
+elements.
 
 Case 5: Three calls are needed  if the data is not contiguous (as in
 figure \ref{fig-data-not-contiguous}) and the entire contiguous gap is
@@ -421,7 +421,7 @@ of the hot spot (i.e., the index of the hot spot before the move) is
 no greater than the size of the gap.  The first call will move
 everything to the left of the gap so that the gap will be flush left
 as in case 2 above.  The second call will move the remaining
-elements.  
+elements.
 
 Case 5: Three calls are needed if the data is not contiguous (as in
 figure \ref{fig-data-not-contiguous}) and the entire contiguous gap is
@@ -433,7 +433,7 @@ will move the gap flush left, creating the situation of case 3 above
 \subsection{Increasing the size of the vector}
 
 We increase the size of the vector whenever it is full and another
-element needs to be added. 
+element needs to be added.
 
 When this call is made, \texttt{gap-start} and \texttt{gap-end} have
 the same value.  We must preserve the position of the gap in the new
@@ -447,7 +447,7 @@ before the gap to the start of the new vector.  Then we copy (using
 another single call to \cl{replace}) all elements after the gap to the
 end of the new vector. The value of \texttt{gap-end} is incremented by
 the difference in size of the two vectors, as is \texttt{data-start}
-if it was greater than or equal to \texttt{gap-end}. 
+if it was greater than or equal to \texttt{gap-end}.
 
 \subsection{Decreasing the size of the vector}
 
@@ -459,7 +459,7 @@ before the gap to the start of the new vector.  Then we copy (using
 another single call to \cl{replace}) all elements after the gap to the
 end of the new vector. The value of \texttt{gap-end} is decremented by
 the difference in size of the two vectors, as is \texttt{data-start}
-if it was greater than or equal to \texttt{gap-end}. 
+if it was greater than or equal to \texttt{gap-end}.
 
 \subsection{Inserting an object}
 
@@ -476,7 +476,7 @@ a position of $0$ and from a position equal to the current length of
 the chain.
 
 But first, we need to make sure the vector is not full.  If it is, we
-call the function to increase its size. 
+call the function to increase its size.
 
 We place the object to be inserted at the index of \texttt{gap-start}
 and then increment \texttt{gap-start}.  If this operation gives a
@@ -490,23 +490,23 @@ element at \texttt{gap-end}.  We do this by replacing it by the
 \texttt{fill-element} so as to avoid holding on to it in case it is no
 longer referenced.  Then we increment \texttt{gap-end}.
 
-Finally, we check whether the size of the vector should be decreased. 
+Finally, we check whether the size of the vector should be decreased.
 
 \subsection{Stack and queue operations}
 
 The stack and queue operations are implemented very efficiently.  The
 \texttt{push} and \texttt{pop} operations simply call the
-corresponding \texttt{insert} and \texttt{delete} operations. 
+corresponding \texttt{insert} and \texttt{delete} operations.
 
 The \texttt{rotate} operation deletes from one end of the chain and
-inserts on the other. 
+inserts on the other.
 
 \section{The \texttt{flexicursor} protocol}
 
 A \textit{cursorchain} is like a flexichain, but it also keeps around
 a bunch of ``flexicursors''.
 
-\subsection{The concept of a flexicursor} 
+\subsection{The concept of a flexicursor}
 
 A flexicursor is an object that corresponds to a position between two
 elements of the chain.  There are two types of flexicursors,
@@ -539,14 +539,14 @@ There can be a very large number of cursors in a chain without any
 negative impact on performance.  In particular, a sequence of insert
 operations is not affected by the number of cursors of the chain.
 For insert operations, we maintain the complexity proportional to the
-distance between two consecutive positions.  
+distance between two consecutive positions.
 
 A delete operation takes time proportional to the number of
 left-sticky cursors to the right of the element to delete plus the
-number of right-sticky cursors to the left of it. 
+number of right-sticky cursors to the left of it.
 
 The only bad case is thus a delete operation of an element with an
-unbounded number of cursors sticking to it. 
+unbounded number of cursors sticking to it.
 
 \subsection{Protocol classes and functions}
 
@@ -564,36 +564,36 @@ The protocol class for all flexicursors.
 
 \Definitarg {chain}
 
-This initarg determines the cursorchain with which the cursor is associated. 
+This initarg determines the cursorchain with which the cursor is associated.
 
 \Defclass {standard-flexicursor}
 
-The standard instantiable subclass of \cl{flexicursor}. 
+The standard instantiable subclass of \cl{flexicursor}.
 
 \Defclass {left-sticky-flexicursor}
 
 The standard instantiable class for left-sticky flexicursors.  It is a
-subclass of standard-flexicursor. 
+subclass of standard-flexicursor.
 
 \Defclass {right-sticky-flexicursor}
 
 The standard instantiable class for right-sticky flexicursors.  It is a
-subclass of standard-flexicursor. 
+subclass of standard-flexicursor.
 
 \Defgeneric {chain} {cursor}
 
 Return the underlying cursorchain of the flexicursor given
-as argument. 
+as argument.
 
 \Defgeneric {clone-cursor} {cursor}
 
 Create a cursor that is initially at the same location as the one
-given as argument.  
+given as argument.
 
 \Deferror {flexi-position-error}
 
 This condition is signaled whenever an attempt is made to use position
-outside of the range of valid positions. 
+outside of the range of valid positions.
 
 \Defgeneric {cursor-pos} {cursor}
 
@@ -603,18 +603,18 @@ Return the position of the cursor.
 
 Set the position of the cursor.  If the new position of the cursor is
 before the first position or after the last position of the chain, the
-condition \cl{flexi-position-error} is signaled. 
+condition \cl{flexi-position-error} is signaled.
 
 \Defgeneric {at-beginning-p} {cursor}
 
 Return true if the cursor is at the beginning of the chain (i.e., if
 it has a position of 0).  This operation is guaranteed to be executed
-in O(1) time. 
+in O(1) time.
 
 \Deferror {at-beginning}
 
 This condition is signaled whenever an attempt is made to move a
-cursor beyond the beginning of the chain. 
+cursor beyond the beginning of the chain.
 
 \Defgeneric {at-end-p} {cursor}
 
@@ -625,21 +625,21 @@ guaranteed to be executed in O(1) time.
 \Deferror {at-end}
 
 This condition is signaled whenever an attempt is made to move a
-cursor beyond the end of the chain. 
+cursor beyond the end of the chain.
 
 \Deferror {incompatible-object-type}
 
 This condition is signaled whenever an attempt is made to insert an
-object of an incompatible type into an chain. 
+object of an incompatible type into an chain.
 
 \Defgeneric {insert} {cursor object}
 
-Insert an object at the position corresponding to that of the cursor. 
+Insert an object at the position corresponding to that of the cursor.
 All cursors located at positions greater than the one corresponding to
 the cursor given as argument, as well as left-sticky cursors (possibly
 including the one given as argument)  located at the same position as
 the one given as argument will have their positions incremented by
-one. Other cursors are unaffected. 
+one. Other cursors are unaffected.
 
 If the type of the object does not match the type accepted by the
 underlying chain, the \cl{incompatible-object-type} condition is
@@ -648,7 +648,7 @@ signaled.
 \Defgeneric {insert-sequence} {cursor sequence}
 
 The effect is the same as if each object of the sequence were
-inserted using the \texttt{insert} generic function. 
+inserted using the \texttt{insert} generic function.
 
 \Defgeneric {delete<} {cursor \optional (n 1)}
 
@@ -675,7 +675,7 @@ efficient to use this macro than to use individual editing operations.
 \Defgeneric {element<} {cursor}
 
 Return the element immediately before the cursor.  If the cursor is
-at the beginning, an at-beginning condition will be signaled. 
+at the beginning, an at-beginning condition will be signaled.
 
 \Defgeneric {(setf element<)} {object cursor}
 
@@ -686,7 +686,7 @@ condition will be signaled.
 \Defgeneric {element>} {cursor}
 
 Return the element immediately after the cursor.  If the cursor is
-at the end, an at-end condition will be signaled. 
+at the end, an at-end condition will be signaled.
 
 \Defgeneric {(setf element>)} {object cursor}
 
@@ -699,22 +699,22 @@ signaled.
 Cursors are stored as lists of weak references so that they can be
 recycled when no longer referenced by client code.  A vector that
 parallels the one holding elements of the flexichain holds per-element
-lists of cursors that stick to that element. 
+lists of cursors that stick to that element.
 
 A cursor contains its \textit{index in the vector} as opposed to its
 \textit{position in the sequence}.  This method avoids most updates of
 cursors at each insert and delete operation.  Most cursors need only
 be updated whenever the gap moves.  For left-sticky cursors, we store
 the index of $p-1$, where $p$ is the position of the cursor.  For
-right-sticky cursors, we store $p$ itself. 
+right-sticky cursors, we store $p$ itself.
 
 After a delete operation, cursors with indexes equal to the old value
 of \texttt{gap-end} need to be updated.  Right-sticky cursors will be
 attached to the index corresponding to the new value of
 \texttt{gap-end}, whereas left-sticky cursors get attached to the
-position immediately preceding \texttt{gap-start}. 
+position immediately preceding \texttt{gap-start}.
 
-Insert operations do not affect cursors at all. 
+Insert operations do not affect cursors at all.
 
 Mixing of \texttt{flexicursor} and \texttt{flexichain} editing
 operations is possible thanks to an internal protocol for moving the
