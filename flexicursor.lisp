@@ -251,4 +251,3 @@ sequence was inserted using INSERT."))
           'at-beginning-error :cursor cursor)
   (setf (element* (chain cursor) (1- (cursor-pos cursor)))
         object))
-
