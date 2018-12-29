@@ -64,7 +64,8 @@ indicating whether an element was found or not."
     (hcl:set-array-weak array t)
     (setf (svref array 0) object)
     array)
-  #-(or :sbcl :cmu :clisp :allegro :openmcl :corman :lispworks)
+  #+:ecl (ext:make-weak-pointer object)
+  #-(or :sbcl :cmu :clisp :allegro :openmcl :corman :lispworks :ecl)
   object)
 
 (defun weak-pointer-value (weak-pointer)
@@ -76,10 +77,11 @@ indicating whether an element was found or not."
   #+:openmcl (prog1 (gethash weak-pointer *weak-pointers*))
   #+:corman (ccl:weak-pointer-obj weak-pointer)
   #+:lispworks (svref weak-pointer 0)
-  #-(or :sbcl :cmu :clisp :allegro :openmcl :corman :lispworks)
+  #+:ecl (ext:weak-pointer-value object)
+  #-(or :sbcl :cmu :clisp :allegro :openmcl :corman :lispworks :ecl)
   weak-pointer)
 
-#-(or :sbcl :cmu :clisp :allegro :openmcl :corman :lispworks)
+#-(or :sbcl :cmu :clisp :allegro :openmcl :corman :lispworks :ecl)
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (warn "No support for weak pointers in this implementation. ~
          Things may get big and slow."))
