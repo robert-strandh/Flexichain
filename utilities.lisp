@@ -79,7 +79,7 @@ indicating whether an element was found or not."
   #+:corman (ccl:weak-pointer-obj weak-pointer)
   #+:lispworks (svref weak-pointer 0)
   #+:ecl (ext:weak-pointer-value object)
-  #+:clasp (core:weak-pointer-value weak-pointer))
+  #+:clasp (core:weak-pointer-value weak-pointer)
   #-(or :sbcl :cmu :clisp :allegro :openmcl :corman :lispworks :ecl :clasp)
   weak-pointer)
 
