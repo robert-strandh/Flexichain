@@ -28,6 +28,7 @@
   :version #.(with-open-file
                  (vers (merge-pathnames "version.lisp-expr" *load-truename*))
                (read vers))
+  :depends-on ("trivial-garbage")
   :components ((:static-file "version" :pathname #p"version.lisp-expr")
                (:file "flexichain-package")
                (:file "utilities" :depends-on ("flexichain-package"))

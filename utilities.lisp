@@ -36,54 +36,26 @@ indicating whether an element was found or not."
 
 ;;;; Weak pointers
 
-#+:openmcl
-(defvar *weak-pointers* (make-hash-table :test 'eq :weak :value)
-  "Weak value hash-table mapping between pseudo weak pointers and its values.")
-
-#+:openmcl
-(defstruct (weak-pointer (:constructor %make-weak-pointer)))
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (let* ((value (list t))
+         (nowhere (make-broadcast-stream))
+         (can-make-weak-pointer (not (null (trivial-garbage:make-weak-pointer value)))))
+    ;; Keep the value live.
+    (print value nowhere)
+    (defvar *can-make-weak-pointer* can-make-weak-pointer)
+    (unless can-make-weak-pointer
+      (warn "No support for weak pointers in this implementation. ~
+         Things may get big and slow."))))
 
 (defun make-weak-pointer (object)
   "Creates a new weak pointer which points to OBJECT. For
    portability reasons, OBJECT most not be NIL."
   (assert (not (null object)))
-  #+:sbcl (sb-ext:make-weak-pointer object)
-  #+:cmu (ext:make-weak-pointer object)
-  #+:clisp (ext:make-weak-pointer object)
-  #+:allegro
-  (let ((wv (excl:weak-vector 1)))
-    (setf (svref wv 0) object)
-    wv)
-  #+:openmcl
-  (let ((wp (%make-weak-pointer)))
-    (setf (gethash wp *weak-pointers*) object)
-    wp)
-  #+:corman (ccl:make-weak-pointer object)
-  #+:lispworks
-  (let ((array (make-array 1)))
-    (hcl:set-array-weak array t)
-    (setf (svref array 0) object)
-    array)
-  #+:ecl (ext:make-weak-pointer object)
-  #+:clasp (core:make-weak-pointer object)
-  #-(or :sbcl :cmu :clisp :allegro :openmcl :corman :lispworks :ecl :clasp)
-  object)
+  (if *can-make-weak-pointer*
+      (trivial-garbage:make-weak-pointer object)
+      object))
 
-(defun weak-pointer-value (weak-pointer)
-  "If WEAK-POINTER is valid, returns its value. Otherwise, returns NIL."
-  #+:sbcl (prog1 (sb-ext:weak-pointer-value weak-pointer))
-  #+:cmu (prog1 (ext:weak-pointer-value weak-pointer))
-  #+:clisp (prog1 (ext:weak-pointer-value weak-pointer))
-  #+:allegro (svref weak-pointer 0)
-  #+:openmcl (prog1 (gethash weak-pointer *weak-pointers*))
-  #+:corman (ccl:weak-pointer-obj weak-pointer)
-  #+:lispworks (svref weak-pointer 0)
-  #+:ecl (ext:weak-pointer-value weak-pointer)
-  #+:clasp (core:weak-pointer-value weak-pointer)
-  #-(or :sbcl :cmu :clisp :allegro :openmcl :corman :lispworks :ecl :clasp)
-  weak-pointer)
-
-#-(or :sbcl :cmu :clisp :allegro :openmcl :corman :lispworks :ecl :clasp)
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (warn "No support for weak pointers in this implementation. ~
-         Things may get big and slow."))
+(defun weak-pointer-value (object)
+  (if *can-make-weak-pointer*
+      (trivial-garbage:weak-pointer-value object)
+      object))
