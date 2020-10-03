@@ -650,13 +650,42 @@ signaled.
 The effect is the same as if each object of the sequence were
 inserted using the \texttt{insert} generic function.
 
+\Defgeneric {move<} {cursor \optional (n 1)}
+
+Move the cursor n positions to the left.
+
+If n is not a positive integer then the \cl{type-error} condition is signaled.
+
+If the cursor is at the beginning of the chain, the \cl{at-beginning-error} is
+signaled.
+
+If moving the cursor would put it before the beginning of the chain, then it
+is moved to the beginning of the chain and the \cl{flexi-position-error}
+condition is signaled.
+
+\Defgeneric {move>} {cursor \optional (n 1)}
+
+Move the cursor n positions to the right.
+
+If n is not a positive integer then the \cl{type-error} condition is signaled.
+
+If the cursor is at the end of the chain, the \cl{at-end-error} is signaled.
+
+If moving the cursor would put it after the end of the chain, then it is moved
+to the end of the chain and the \cl{flexi-position-error} condition is
+signaled.
+
 \Defgeneric {delete<} {cursor \optional (n 1)}
 
 Delete n elements before the cursor.
 
+If n is not a positive integer then the \cl{type-error} condition is signaled.
+
 \Defgeneric {delete>} {cursor \optional (n 1)}
 
-Delete n elements after the cursor.  ...
+Delete n elements after the cursor.
+
+If n is not a positive integer then the \cl{type-error} condition is signaled.
 
 A sequence of insert and delete operations is guaranteed to be
 efficient if the positions of successive operations are not too far

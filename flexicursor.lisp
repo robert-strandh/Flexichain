@@ -214,19 +214,31 @@ sequence was inserted using INSERT."))
               (left-sticky-flexicursor (setf (cursor-pos cursor)
                                              position)))))))
 
+(defmethod move> ((cursor standard-flexicursor) &optional (n 1))
+  (check-type n (integer 1))
+  (assert (not (at-end-p cursor)) ()
+          'at-end-error :cursor cursor)
+  (loop repeat n
+        do (incf (cursor-pos cursor))))
+
+(defmethod move< ((cursor standard-flexicursor) &optional (n 1))
+  (check-type n (integer 1))
+  (assert (not (at-beginning-p cursor)) ()
+          'at-beginning-error :cursor cursor)
+  (loop repeat n
+        do (decf (cursor-pos cursor))))
+
 (defmethod delete> ((cursor standard-flexicursor) &optional (n 1))
+  (check-type n (integer 1))
   (let ((chain (chain cursor))
         (position (cursor-pos cursor)))
-    (assert (plusp n) ()
-            'flexi-position-error :chain chain :position n)
     (loop repeat n
           do (delete* chain position))))
 
 (defmethod delete< ((cursor standard-flexicursor) &optional (n 1))
+  (check-type n (integer 1))
   (let ((chain (chain cursor))
         (position (cursor-pos cursor)))
-    (assert (plusp n) ()
-            'flexi-position-error :chain chain :position n)
     (loop repeat n
           do (delete* chain (- position n)))))
 
