@@ -39,7 +39,7 @@ indicating whether an element was found or not."
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defconstant +can-make-weak-pointer+
     (not (null (trivial-garbage:weak-pointer-p
-                (trivial-garbage:make-weak-pointer t))))))
+                (trivial-garbage:make-weak-pointer "<foo>"))))))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (unless +can-make-weak-pointer+
